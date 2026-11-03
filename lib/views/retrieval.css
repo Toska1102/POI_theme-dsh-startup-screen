@@ -77,14 +77,14 @@
 .poi-retrieval-status h2 {
   background: #f0eff2;
   color: #202127;
-  font-size: 38px;
+  font-size: max(38px, calc(12px / var(--poi-scale)));
   line-height: 48px;
   padding: 0 12px;
   letter-spacing: 3px;
 }
 .poi-retrieval-status p {
   color: #e4e7ed;
-  font-size: 31px;
+  font-size: max(31px, calc(12px / var(--poi-scale)));
   line-height: 44px;
   padding: 0 12px;
   letter-spacing: 1px;
@@ -92,7 +92,7 @@
 .poi-retrieval-status small {
   display: block;
   color: #a4aeba;
-  font-size: 25px;
+  font-size: max(25px, calc(12px / var(--poi-scale)));
   line-height: 38px;
   padding: 0 12px 8px;
   letter-spacing: 1px;
@@ -141,16 +141,18 @@
   will-change: transform;
 }
 .poi-selected-camera > header {
-  height: 50px;
+  min-height: 50px;
   padding: 12px 16px;
-  font-size: 21px;
+  line-height: 1.25;
+  font-size: max(21px, calc(12px / var(--poi-scale)));
   letter-spacing: 2px;
   white-space: nowrap;
 }
 .poi-selected-camera > footer {
-  height: 38px;
+  min-height: 38px;
   padding: 8px 16px;
-  font-size: 19px;
+  line-height: 1.25;
+  font-size: max(19px, calc(12px / var(--poi-scale)));
   letter-spacing: 2px;
   white-space: nowrap;
 }
@@ -194,8 +196,8 @@
   white-space: nowrap;
   background: #f2f0f3;
   color: #793f48;
-  font-size: 18px;
-  line-height: 20px;
+  font-size: max(18px, calc(12px / var(--poi-scale)));
+  line-height: 1.25;
   letter-spacing: 1px;
 }
 .poi-entity-track > i {
@@ -237,4 +239,10 @@
   transform-origin: left center;
   background: #ab657188;
   z-index: 1;
+}
+
+/* Keep the first label to the left of the second track at narrow sizes. */
+.poi-entity-one > span {
+  left: auto;
+  right: -1px;
 }
