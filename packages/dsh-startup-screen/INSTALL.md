@@ -23,7 +23,7 @@ npm pack
 使用 DSH 插件管理器安装本地包。若环境提供 DSH CLI，可在桌面端完全退出后执行：
 
 ```sh
-dsh plugin --profile desktop add ./dsh-startup-screen-2.0.0.tgz
+dsh plugin --profile desktop add ./dsh-startup-screen-2.0.1.tgz
 ```
 
 部分 DSH 版本限制 CLI 操作 desktop profile；按桌面端支持的插件安装流程处理。安装后重新打开应用，在设置中检查「POI 启动动画」。

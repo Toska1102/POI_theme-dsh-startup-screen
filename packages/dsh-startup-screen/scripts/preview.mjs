@@ -42,9 +42,15 @@ const html = fs.readFileSync(
 )
 const server = http.createServer(async (req, res) => {
   try {
-    const route = routes.find(r =>
-      r.kind === 'exact' ? req.url.split('?')[0] === r.path : req.url.startsWith(r.path)
-    )
+    // Match the actual DSH WebServer contract, including complete path boundaries.
+    const pathname = new URL(req.url, 'http://localhost').pathname
+    const route =
+      routes.find(r => r.kind === 'exact' && r.path === pathname) ||
+      routes
+        .filter(
+          r => r.kind === 'prefix' && (pathname === r.path || pathname.startsWith(`${r.path}/`))
+        )
+        .sort((a, b) => b.path.length - a.path.length)[0]
     if (route) {
       await route.handler(req, res)
       return

@@ -1,0 +1,68 @@
+{
+  "name": "dsh-startup-screen",
+  "version": "2.0.1",
+  "description": "POI / The Machine 启动动画：四个固定镜头、十阶段叙事、两次确认和人声。",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "deepseek-harness-desktop",
+    "startup",
+    "splash",
+    "boot-animation"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "preview/index.html",
+    "open-preview.sh",
+    "cordis.patch.yml",
+    "README.md",
+    "INSTALL.md",
+    "DESKTOP.md",
+    "AUDIO-FIELDS.md",
+    "LICENSE",
+    "scripts"
+  ],
+  "scripts": {
+    "test": "node --test test/host.test.mjs && playwright test",
+    "preview": "node scripts/preview.mjs"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Toska1102/POI_theme-dsh-startup-screen.git",
+    "directory": "packages/dsh-startup-screen"
+  },
+  "bugs": {
+    "url": "https://github.com/Toska1102/POI_theme-dsh-startup-screen/issues"
+  },
+  "homepage": "https://github.com/Toska1102/POI_theme-dsh-startup-screen#readme",
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-settings"
+      ],
+      "platform": "web"
+    }
+  },
+  "author": "沈宏宏",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "esbuild": "^0.28.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  }
+}

@@ -1,10 +1,9 @@
-# POI / THE MACHINE 启动动画
+# POI / THE MACHINE · DeepSeek Harness
 
-DeepSeek Harness 启动插件。四个固定静帧镜头、十阶段启动叙事、两次人工确认、六段人声与合成短音效。目标平台为 macOS，设计坐标为 2560×1440，运行时按窗口 CSS 视口适配。
-
-身份、权限、摄像头与会话信息用于启动叙事。插件使用本地固定素材。
+基于 npm workspaces 的 monorepo，包含 2.0.1 启动插件、完整自动测试和 2560×1440 设计稿。目标平台为 macOS DeepSeek Harness。
 
 ## 项目来源与致谢
+
 
 本项目是基于 [6shenhonghong9/dsh-startup-screen](https://github.com/6shenhonghong9/dsh-startup-screen) 的二次开发版本。原作者为沈宏宏。上游项目提供了 DeepSeek Harness 启动插件的基础实现、插件接入方式、设置功能和六段人声素材。本仓库保留上游 MIT 许可证及原作者版权声明。
 
@@ -18,74 +17,42 @@ DeepSeek Harness 启动插件。四个固定静帧镜头、十阶段启动叙事
 
 代码许可、字体许可与第三方音视频素材的权利范围分别适用。POI 相关名称与视觉灵感不代表官方关联或授权。
 
-## 当前源码范围
+## 仓库结构
 
-本仓库提交的是 2.0.0 发布包解包内容，包含插件运行代码、本地预览工具和素材。解包内容未包含 `test/`、Playwright 配置及原开发仓库的 Git 历史。`package.json` 保留发布包中的测试命令；执行 `npm test` 前需要补齐对应测试文件。
+| 路径 | 内容 |
+| --- | --- |
+| `packages/dsh-startup-screen/` | 可独立打包的 DSH 插件，包含运行代码、素材、预览工具和测试 |
+| `packages/dsh-startup-screen/docs/screenshots/` | POI 界面截图 |
+| `design/poi.pen` | Pen 设计稿 |
+| `design/poi-assets/` | 设计稿引用的静帧素材 |
 
-此版本保留 `/dsh-startup/asset/` 资源路由前缀。在已验收的 macOS DSH `0.2.1-rc.5` 中，该前缀会使图片、字体和人声请求返回 404。此前原生验收通过的 2.0.1 资源路由修复未包含在本次解包内容中。当前仓库版本需要完成该修复后再进行原生验收。
+根目录仅用于开发编排，设置为 `private`。安装到 DSH 的产物为 `dsh-startup-screen` 包。
 
-## 播放流程
+## 开发与验证
 
-| 阶段 | 内容 | 推进方式 |
-| --- | --- | --- |
-| 00 | The Machine 开机日志 | 自动 |
-| 01 | 航拍摄像头接入 | 自动 |
-| 02 | 雨夜人物与系统自检 | 自动 |
-| 03 | 访问授权 | 点击、Enter 或空格 |
-| 04 | ADMIN 身份档案 | 点击、Enter 或空格 |
-| 05 | 暗廊镜头与请求接收 | 自动 |
-| 06 | 权限数据读取 | 自动 |
-| 07 | 核验通过 | 自动 |
-| 08 | 城市俯瞰与欢迎人声 | 自动 |
-| 09 | 故障与信号移交 | 动画结束后显示 DSH |
-
-声音与画面并行。确认后继续等待当前人声结束。速度仅改变视觉节奏，人声保持原速。浏览器首次用户操作解锁声音；自动播放模式在解锁前保持静音。
-
-允许跳过时，SKIP 和 Esc 可结束当前播放。重播先销毁上一轮声音、监听器、定时器和动画。
-
-## 开发与预览
-
-需要 Node.js >=20。生产插件无新增运行依赖。预览工具和浏览器测试使用开发依赖。
+需要 Node.js >=20。以下命令在仓库根目录执行。
 
 ```sh
-npm install
+npm ci
+npm run browser:install
+npm test
 npm run preview
 ```
 
-打开终端输出的 `http://127.0.0.1:4173`。预览使用正式 Host、运行时和设置面板，配置写入临时目录；正常退出时清除。所有图片、字体、音频和预览脚本均由本地服务下发。`/?desktop=1` 可检查不经过首页注入的客户端自举。
+预览地址为 `http://127.0.0.1:4173`。`/?desktop=1` 用于检查桌面自举路径。预览配置写入独立临时目录。
 
 ```sh
-npm pack
+npm run pack:plugin
 ```
 
-真实 DSH 的安装和冷启动验收须在目标应用中完成。当前解包内容缺少自动测试源码，无法直接复跑原开发环境的测试。
+打包产物为根目录下的 `dsh-startup-screen-2.0.1.tgz`。通过 DSH 插件管理器安装该文件。
 
-## 设置
+## 行为与验证范围
 
-- 身份：名称、编号、展示权限等级。
-- 播放：启用、每次/会话/每天、两次确认、允许跳过、速度 0.35–3×。
-- 声音：人声开关/音量、界面音效开关/音量。
-- 操作：保存、预览已保存配置、恢复默认、放弃修改。
+插件使用四个固定镜头、十阶段叙事、两次确认、六段人声与合成短音效。身份与权限信息用于启动叙事。动画结束后移交 DSH。
 
-保存后预览使用已保存值。配置文件为 `$DSH_HOME/dsh-startup.json`，默认 `~/.dsh/dsh-startup.json`。读取与保存只保留当前支持字段。
+2.0.1 使用 `/dsh-startup/asset` 注册资源前缀。预览和 Host 测试采用 DSH 的完整路径边界匹配规则。自动测试覆盖配置、资源路由、生命周期、两次确认、声音完成与停止，以及 1×/2×窗口布局。
 
-## 文件职责
+实际 macOS DSH 已验证 2.0.1 资源加载、Retina 画面、两次确认和动画移交。人声实际听感和外接屏跨屏表现仍需人工确认。已知 Esc 跳过会同时关闭底层设置窗口。
 
-| 文件 | 职责 |
-| --- | --- |
-| `lib/config.js` | 默认值与 Host 输入校验 |
-| `lib/index.js` | 配置读写、资源路由、Web 首页注入 |
-| `lib/client.js` | DSH ModuleLoader 注册、设置面板、桌面自举 |
-| `lib/splash.js` | 场景、十阶段、声音及生命周期 |
-| `lib/splash.css` | POI 图层、版式、特效、视口适配 |
-| `scripts/preview.mjs` | 回环地址预览服务与临时配置 |
-
-镜头和目标框共用 2560×1440 场景坐标，并使用统一缩放。HUD 在窗口内独立布局。确认期间暂停镜头运动。减少动态效果模式关闭镜头运动、扫描旋转、闪光与故障动画。
-
-## 素材与许可
-
-四张底片来自本项目 `poi.pen` 使用的生成图片。字体 Michroma、VT323、Share Tech Mono 来自 [Google Fonts 仓库](https://github.com/google/fonts)，随包保留各自 OFL 许可。
-
-六段人声沿用原插件素材。前五段来自第三方视频，终幕为原插件提供的自制落幕词；这些素材的授权范围须单独确认。原代码的 MIT 许可不覆盖第三方素材。界面短音效由 Web Audio 合成。
-
-参见 [安装](INSTALL.md)、[桌面接入](DESKTOP.md)、[音频](AUDIO-FIELDS.md)。
+详见 [插件说明](packages/dsh-startup-screen/README.md)、[安装](packages/dsh-startup-screen/INSTALL.md)、[macOS 接入](packages/dsh-startup-screen/DESKTOP.md)和[声音说明](packages/dsh-startup-screen/AUDIO-FIELDS.md)。

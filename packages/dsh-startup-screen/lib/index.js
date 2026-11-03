@@ -212,7 +212,7 @@ function apply(ctx) {
   disposers.push(
     registerRoute({
       kind: 'prefix',
-      path: ROUTE_BASE + '/asset/',
+      path: ROUTE_BASE + '/asset',
       handler: (req, res) => {
         if (!['GET', 'HEAD'].includes(req.method || 'GET')) {
           res.writeHead(405)
