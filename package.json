@@ -1,7 +1,7 @@
 {
   "name": "poi-theme-dsh-startup-screen",
-  "version": "2.0.1",
-  "description": "POI / The Machine 启动动画：四个固定镜头、十阶段叙事、两次确认和人声。",
+  "version": "2.1.0",
+  "description": "POI / The Machine 冷白启动动画：十阶段连续演出、一次确认、约 9 秒时长和可配置音效。",
   "keywords": [
     "dsh",
     "dsh-plugin",
