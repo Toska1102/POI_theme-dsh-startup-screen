@@ -1,0 +1,22 @@
+.poi-retrieval-image {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.55;
+}
+.poi-retrieval-status {
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 65%;
+  background: #04090de8;
+  padding: 18px;
+}
+.poi-retrieval-status h2 {
+  font-size: clamp(20px, 2vw, 38px);
+}
+.poi-retrieval-status p {
+  font-size: clamp(12px, 1.1vw, 25px);
+  margin-top: 12px !important;
+}
